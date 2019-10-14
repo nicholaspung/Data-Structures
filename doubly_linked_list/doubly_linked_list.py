@@ -52,53 +52,56 @@ class DoublyLinkedList:
     as the new head of the list. Don't forget to handle 
     the old head node's previous pointer accordingly."""
     def add_to_head(self, value):
-        new_node = ListNode(value, None, None)
-        self.length += 1
-
-        if not self.head and not self.tail:
-            self.head = new_node
-            self.tail = new_node
-        else:
-            new_node.next = self.head
-            self.head.prev = new_node
-            self.head = new_node
-
-
-    """Removes the List's current head node, making the
-    current head's next node the new head of the List.
-    Returns the value of the removed Node."""
-    def remove_from_head(self):
-        self.delete(self.head)
-
-   """Wraps the given value in a ListNode and inserts it 
-    as the new tail of the list. Don't forget to handle 
-    the old tail node's next pointer accordingly."""
-    def add_to_tail(self, value):
-        new_node = ListNode(value, None, None)
+        new_node = ListNode(value, None, self.head)
 
         if not self.tail and not self.head:
             self.head = new_node
             self.tail = new_node
         else:
-            new_node.prev = self.tail
+            self.head.prev = new_node
+            self.head = new_node
+        
+        self.length += 1
+
+    """Removes the List's current head node, making the
+    current head's next node the new head of the List.
+    Returns the value of the removed Node."""
+    def remove_from_head(self):
+        value = self.head.value
+        self.delete(self.head)
+        return value
+
+   """Wraps the given value in a ListNode and inserts it 
+    as the new tail of the list. Don't forget to handle 
+    the old tail node's next pointer accordingly."""
+    def add_to_tail(self, value):
+        new_node = ListNode(value, self.tail, None)
+
+        if not self.tail and not self.head:
+            self.head = new_node
+            self.tail = new_node
+        else:
             self.tail.next = new_node
-            self.tail = self.tail.next
+            self.tail = new_node
+        
+        self.length += 1
 
     """Removes the List's current tail node, making the 
     current tail's previous node the new tail of the List.
     Returns the value of the removed Node."""
     def remove_from_tail(self):
+        value = self.tail.value
         self.delete(self.tail)
+        return value
 
     """Removes the input node from its current spot in the 
     List and inserts it as the new head node of the List."""
     def move_to_front(self, node):
-        prev_node = node.prev
-        next_node = node.next
+        if node is self.head:
+            return
 
-        prev_node.next = next_node
-        next_node.prev = prev_node
-
+        value = node.value
+        self.delete()
         self.add_to_head(node)
 
     """Removes the input node from its current spot in the 
