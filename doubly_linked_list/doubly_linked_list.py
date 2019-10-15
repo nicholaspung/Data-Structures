@@ -71,7 +71,7 @@ class DoublyLinkedList:
         self.delete(self.head)
         return value
 
-   """Wraps the given value in a ListNode and inserts it 
+    """Wraps the given value in a ListNode and inserts it 
     as the new tail of the list. Don't forget to handle 
     the old tail node's next pointer accordingly."""
     def add_to_tail(self, value):
@@ -101,8 +101,8 @@ class DoublyLinkedList:
             return
 
         value = node.value
-        self.delete()
-        self.add_to_head(node)
+        self.delete(node)
+        self.add_to_head(value)
 
     """Removes the input node from its current spot in the 
     List and inserts it as the new tail node of the List."""
@@ -111,8 +111,8 @@ class DoublyLinkedList:
             return
 
         value = node.value
-        self.delete()
-        self.add_to_tail(node)
+        self.delete(node)
+        self.add_to_tail(value)
 
     """Removes a node from the list and handles cases where
     the node was the head or the tail"""
@@ -143,7 +143,7 @@ class DoublyLinkedList:
 
         while current:
             if current.value > max_val:
-                max_val = current
+                max_val = current.value
             current = current.next
 
         return max_val

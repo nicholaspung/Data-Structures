@@ -1,3 +1,5 @@
+from dll_queue import Queue
+
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -7,7 +9,10 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        pass
+        self.limit = limit
+        self.size = 0
+        self.contents = Queue()
+        self.storage = {}
 
     """
     Retrieves the value associated with the given key. Also
@@ -30,4 +35,11 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-        pass
+        self.storage[key] = value
+
+        if self.size > self.limit:
+            self.contents.dequeue()
+        else:
+            self.size += 1
+            
+        self.contents.enqueue(value)
