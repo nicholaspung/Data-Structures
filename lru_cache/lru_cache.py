@@ -22,7 +22,21 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
+        try:
+            self.storage[key]
+
+            current = self.contents.head
+            for _ in range(self.size):
+                if self.storage[key] == self.storage[current.value]:
+                    node = current
+                    break
+                current = current.next
+
+            self.contents.move_to_front(node)
+
+            return self.storage[key]
+        except KeyError:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
