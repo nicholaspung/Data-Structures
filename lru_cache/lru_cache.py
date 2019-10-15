@@ -1,4 +1,4 @@
-from dll_queue import Queue
+from doubly_linked_list import DoublyLinkedList
 
 class LRUCache:
     """
@@ -11,7 +11,7 @@ class LRUCache:
     def __init__(self, limit=10):
         self.limit = limit
         self.size = 0
-        self.contents = Queue()
+        self.contents = DoublyLinkedList()
         self.storage = {}
 
     """
@@ -35,11 +35,24 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-        self.storage[key] = value
+        try:
+            self.storage[key]
 
-        if self.size > self.limit:
-            self.contents.dequeue()
-        else:
-            self.size += 1
-            
-        self.contents.enqueue(value)
+            current = self.contents.head
+            for _ in range(self.size):
+                if self.storage[key] == self.storage[current.value]:
+                    node = current
+                    break
+                current = current.next
+
+            self.contents.move_to_front(node)
+            self.storage[key] = value
+        except KeyError:
+            self.storage[key] = value
+            if self.size == self.limit:
+                del self.storage[self.contents.tail.value]
+                self.contents.remove_from_tail()
+            else:
+                self.size += 1
+
+            self.contents.add_to_head(key)
